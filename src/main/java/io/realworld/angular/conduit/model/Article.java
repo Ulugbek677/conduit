@@ -23,6 +23,13 @@ public class Article {
             inverseJoinColumns = {
                     @JoinColumn(table = "tags", referencedColumnName = "id", name = "tag_id")})
     private List<Tag> tags;
+
+    @ManyToMany
+    @JoinTable(name = "likes",
+            joinColumns = {@JoinColumn(table = "articles", referencedColumnName = "id", name = "article_id")},
+            inverseJoinColumns = {
+                    @JoinColumn(table = "users", referencedColumnName = "id", name = "user_id")})
+    private List<User> likes;
     @ManyToOne
     private User author;
 

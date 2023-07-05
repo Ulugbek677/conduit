@@ -18,5 +18,9 @@ public class User {
     String email;
     String password;
     @ManyToMany
-    List<User> followers;
+    @JoinTable(name = "follows",
+            joinColumns = {@JoinColumn(table = "users", referencedColumnName = "id", name = "user_id")},
+            inverseJoinColumns = {
+                    @JoinColumn(table = "users", referencedColumnName = "id", name = "user_id")}) private List<User> likes;
+    private List<User> followers;
 }
