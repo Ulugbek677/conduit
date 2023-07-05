@@ -9,5 +9,4 @@ public class ConduitApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(ConduitApplication.class, args);
 	}
-
 }
