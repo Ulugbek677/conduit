@@ -2,12 +2,14 @@ package io.realworld.angular.conduit.model;
 
 
 import jakarta.persistence.Entity;
-import jdk.jfr.Enabled;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
 
 @Entity
-@NoArgsConstructor
+@Getter
+@Setter
 @AllArgsConstructor
 public class like {
 
