@@ -1,4 +1,4 @@
-package io.realworld.angular.conduit.controller.model;
+package io.realworld.angular.conduit.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
