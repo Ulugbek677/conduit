@@ -1,19 +1,29 @@
 package io.realworld.angular.conduit.dto;
 
-import io.realworld.angular.conduit.model.User;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.List;
 
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class ArticleDTO {
-    String slug;
-    String title;
-    String description;
-    String body;
-    List<TagDTO> tagList;
-    LocalDate createdAt;
-    LocalDate update;
-    Boolean favorited;
-    Long favoritesCount;
-    UserDTO author;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private Long id;
+    private String slug;
+    private String title;
+    private String description;
+    private String body;
+    private List<TagDTO> tagList;
+    private LocalDate createdAt;
+    private LocalDate updateAt;
+    private Boolean favorited;
+    private Long favoritesCount;
+    private ProfileDTO author;
 }
