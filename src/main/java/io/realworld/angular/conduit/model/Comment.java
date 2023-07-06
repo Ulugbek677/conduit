@@ -11,12 +11,12 @@ import java.time.LocalDateTime;
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
-    String body;
+    private Long id;
+    private String body;
     @ManyToOne(targetEntity = User.class)
-    User author;
+    private User author;
     @ManyToOne(targetEntity = Article.class)
-    Article article;
+    private Article article;
 
-    LocalDateTime createdAt;
+    private LocalDateTime createdAt;
 }

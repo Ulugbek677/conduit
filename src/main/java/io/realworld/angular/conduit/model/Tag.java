@@ -11,9 +11,9 @@ import java.util.List;
 public class Tag {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
-    String name;
+    private Long id;
+    private String name;
 
     @ManyToMany(fetch = FetchType.LAZY)
-    List<Article> articles;
+    private List<Article> articles;
 }
