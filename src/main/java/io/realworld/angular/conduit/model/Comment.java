@@ -18,5 +18,5 @@ public class Comment {
     @ManyToOne(targetEntity = Article.class)
     private Article article;
 
-    private LocalDateTime createdAt;
+    private LocalDateTime createAt;
 }

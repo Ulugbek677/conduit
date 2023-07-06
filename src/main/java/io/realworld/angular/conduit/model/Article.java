@@ -25,21 +25,13 @@ public class Article {
     @JoinTable(name = "article_tag",
             joinColumns = {@JoinColumn(table = "articles", referencedColumnName = "id", name = "article_id")},
             inverseJoinColumns = {
-                    @JoinColumn(table = "tags", referencedColumnName = "id", name = "tag_id")})
+                    @JoinColumn(table = "tag", referencedColumnName = "id", name = "tag_id")})
     private List<Tag> tags;
 
-    @ManyToMany
-    @JoinTable(name = "likes",
-            joinColumns = {@JoinColumn(table = "articles", referencedColumnName = "id", name = "article_id")},
-            inverseJoinColumns = {
-                    @JoinColumn(table = "users", referencedColumnName = "id", name = "user_id")})
-    private List<User> likes;
+    private LocalDate createdat;
+    private LocalDate updatedat;
     @ManyToOne
     private User author;
-
-    private LocalDate publishDate;
-    private LocalDate updateDate;
-
 
 
 }

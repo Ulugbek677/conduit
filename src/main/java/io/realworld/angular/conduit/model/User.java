@@ -23,8 +23,8 @@ public class User {
     String password;
     @ManyToMany
     @JoinTable(name = "follows",
-            joinColumns = {@JoinColumn(table = "users", referencedColumnName = "id", name = "user_id")},
+            joinColumns = {@JoinColumn(table = "users", referencedColumnName = "id", name = "follower_id")},
             inverseJoinColumns = {
-                    @JoinColumn(table = "users", referencedColumnName = "id", name = "user_id")}) private List<User> likes;
+                    @JoinColumn(table = "users", referencedColumnName = "id", name = "user_id")})
     private List<User> followers;
 }

@@ -1,6 +1,6 @@
 package io.realworld.angular.conduit.dto;
 
-import io.realworld.angular.conduit.model.User;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,6 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ArticleDTO {
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Long id;
     private String slug;
     private String title;
@@ -24,5 +25,5 @@ public class ArticleDTO {
     private LocalDate updateAt;
     private Boolean favorited;
     private Long favoritesCount;
-    private UserDTO author;
+    private ProfileDTO author;
 }
