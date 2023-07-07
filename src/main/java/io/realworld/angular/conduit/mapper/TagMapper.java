@@ -9,13 +9,21 @@ import lombok.NoArgsConstructor;
 import java.util.stream.Collectors;
 
 public class TagMapper {
-    public static Tag toEntity(TagDTO tagDTO) {
-        return null;
-    }
 
+
+    public static Tag toEntity(TagDTO tagDTO) {
+        return new Tag(
+                null,
+                tagDTO.getName(),
+                null
+        );
+    }
     public static TagDTO toDto(Tag tag) {
         return new TagDTO(
                 tag.getName()
         );
     }
+
+
+
 }

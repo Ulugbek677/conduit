@@ -7,7 +7,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ArticleRepository extends JpaRepository<Article, Long> {
-    @Query(value = "select count(*) from ARTICLES a join LIKES l on a.ID = l.ARTICLE_ID where a.id = ?", nativeQuery = true)
+    @Query(value = "select count(*) from ARTICLES a join LIKES l " +
+            "on a.ID = l.ARTICLE_ID where a.id = ?", nativeQuery = true)
     long getFavoritesCount(Long id);
 
     @Query(value = "select case when count(*) > 0 then true else false end\n" +

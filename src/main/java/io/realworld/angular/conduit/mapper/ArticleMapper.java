@@ -29,4 +29,20 @@ public class ArticleMapper {
                 );
     }
 
+    public static Article toEntity(ArticleDTO articleDTO){
+        return new Article(
+                articleDTO.getId(),
+                articleDTO.getTitle(),
+                articleDTO.getDescription(),
+                articleDTO.getBody(),
+                articleDTO.getTagList().stream()
+                        .map(TagMapper::toEntity)
+                        .collect(Collectors.toList()),
+                articleDTO.getCreatedAt(),
+                articleDTO.getUpdateAt(),
+                UserMapper.toEntity(articleDTO.getAuthor())
+
+        );
+    }
+
 }

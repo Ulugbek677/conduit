@@ -11,5 +11,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
             "from Article a join follows f" +
             "on a.author_id = f.follower_id" +
             "where a.author_id = ? and f.follower_id = ?", nativeQuery = true)
-    Boolean isFollowedToArticleOwner(Long articleId,Long userId);
+    Boolean isFollowedToArticleOwner(Long author,Long userId);
 }
