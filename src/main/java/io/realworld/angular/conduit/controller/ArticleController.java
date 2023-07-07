@@ -37,6 +37,7 @@ public class ArticleController {
     public void deleteArticle(@PathVariable String slug){
         articleService.deleteArticle(slug);
     }
+
     @PutMapping()
     public ResponseEntity<ArticleResponse> updateArticle(@RequestBody ArticleResponse articleResponse){
         return articleService.updateArticle(articleResponse);

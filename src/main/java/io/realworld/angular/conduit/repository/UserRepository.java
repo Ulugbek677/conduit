@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 public interface UserRepository extends JpaRepository<User, Long> {
     @Query(value = "select case when count(*) > 0 then true else false end" +
             "from Article a join follows f" +
-            "on a.author_id = f.follower_id" +
+            "on a.author_id = f.user_id" +
             "where a.author_id = ? and f.follower_id = ?", nativeQuery = true)
-    Boolean isFollowedToArticleOwner(Long author,Long userId);
+    Boolean isFollowedToArticleOwner(Long authorId, Long userId);
 }
