@@ -26,10 +26,13 @@ public class Article {
             joinColumns = {@JoinColumn(table = "articles", referencedColumnName = "id", name = "article_id")},
             inverseJoinColumns = {
                     @JoinColumn(table = "tag", referencedColumnName = "id", name = "tag_id")})
-    private List<Tag> tags;
+    @Column(name = "tags")
+    private List<Tag> tagList;
 
-    private LocalDate createdat;
-    private LocalDate updatedat;
+    @Column(name = "createdat")
+    private LocalDate createdAt;
+    @Column(name = "updatedat")
+    private LocalDate updateAt;
     @ManyToOne
     private User author;
 
