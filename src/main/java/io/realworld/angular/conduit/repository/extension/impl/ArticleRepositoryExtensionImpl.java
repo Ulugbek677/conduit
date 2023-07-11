@@ -3,6 +3,7 @@ package io.realworld.angular.conduit.repository.extension.impl;
 import io.realworld.angular.conduit.dto.response.ArticleResponse;
 import io.realworld.angular.conduit.model.Article;
 import io.realworld.angular.conduit.model.User;
+import io.realworld.angular.conduit.repository.LikeRepository;
 import io.realworld.angular.conduit.repository.extension.ArticleRepositoryExtension;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.*;
@@ -16,6 +17,7 @@ public class ArticleRepositoryExtensionImpl implements ArticleRepositoryExtensio
     private final EntityManager entityManager;
     @Override
     public List<ArticleResponse> getArticlePageableLikesPostAuthorPost(Optional<String> author, Optional<Integer> limit, Optional<Integer> offset, Optional<String> favorited, Optional<String> tag) {
+
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
 
         CriteriaQuery<Article> query = cb.createQuery(Article.class);
@@ -58,15 +60,15 @@ public class ArticleRepositoryExtensionImpl implements ArticleRepositoryExtensio
         return null;
     }
 
-    @Override
-    public boolean isFavorited(Long userId, Long articleId) {
-        String query = "select *\n" +
-                "            from  LIKES l\n" +
-                "            where l.USER_ID = ? and l.ARTICLE_ID = ?";
-        List resultList = entityManager.createNativeQuery(query)
-                .setParameter(1, userId)
-                .setParameter(2, articleId)
-                .getResultList();
-        return resultList.size()>0;
-    }
+//    @Override
+//    public boolean isFavorited(Long userId, Long articleId) {
+//        String query = "select *\n" +
+//                "            from  LIKES l\n" +
+//                "            where l.USER_ID = ? and l.ARTICLE_ID = ?";
+//        List resultList = entityManager.createNativeQuery(query)
+//                .setParameter(1, userId)
+//                .setParameter(2, articleId)
+//                .getResultList();
+//        return resultList.size()>0;
+//    }
 }

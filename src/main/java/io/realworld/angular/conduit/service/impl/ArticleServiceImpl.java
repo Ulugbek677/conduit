@@ -2,20 +2,16 @@ package io.realworld.angular.conduit.service.impl;
 
 import io.realworld.angular.conduit.dto.ArticleDTO;
 import io.realworld.angular.conduit.dto.response.ArticleResponse;
-import io.realworld.angular.conduit.mapper.ArticleMapper;
+import io.realworld.angular.conduit.mapper.extention.ArticleMapper;
 import io.realworld.angular.conduit.model.Article;
-import io.realworld.angular.conduit.model.Tag;
 import io.realworld.angular.conduit.repository.ArticleRepository;
 import io.realworld.angular.conduit.repository.UserRepository;
 import io.realworld.angular.conduit.service.ArticleService;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.criteria.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,7 +38,7 @@ public class ArticleServiceImpl implements ArticleService {
 
         Article article = optionalArticle.get();
         System.out.println(article.getTitle());
-        ArticleDTO articleDTO = articleMapper.toDto(article, articleRepository, userRepository);
+        ArticleDTO articleDTO = articleMapper.toDto(article);
 
         return ResponseEntity.ok(ArticleResponse
                 .builder()
@@ -63,7 +59,7 @@ public class ArticleServiceImpl implements ArticleService {
         Article article = articleRepository.save(articleMapper.toEntity(articleDTO));
         return ResponseEntity.ok(ArticleResponse
                 .builder()
-                .article(articleMapper.toDto(article, articleRepository, userRepository))
+                .article(articleMapper.toDto(article))
                 .build());
     }
 
@@ -72,7 +68,7 @@ public class ArticleServiceImpl implements ArticleService {
         ArticleDTO articleDTO = articleResponse.getArticle();
         Article article = articleMapper.toEntity(articleDTO);
         article = articleRepository.save(article);
-        articleDTO = articleMapper.toDto(article, articleRepository, userRepository);
+        articleDTO = articleMapper.toDto(article);
         return ResponseEntity.ok(ArticleResponse
                 .builder()
                 .article(articleDTO)
