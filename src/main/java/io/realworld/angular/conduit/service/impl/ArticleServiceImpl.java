@@ -76,8 +76,8 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public ResponseEntity<List<ArticleResponse>> getArticlesPageable(Optional<String> author, Optional<Integer> limit, Optional<Integer> offset, Optional<String> favorited, Optional<String> tag) {
-        return ResponseEntity.ok(articleRepository.getArticlePageableLikesPostAuthorPost(author, limit, offset, favorited, tag));
+    public ResponseEntity<ArticleResponse> getArticlesPageable(Optional<String> author, Optional<Integer> limit, Optional<Integer> offset, Optional<String> favorited, Optional<String> tag) {
+        return ResponseEntity.ok(articleRepository.getArticlePageable(author, limit, offset, favorited, tag));
     }
 
 

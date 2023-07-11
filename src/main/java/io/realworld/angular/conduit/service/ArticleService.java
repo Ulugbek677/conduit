@@ -18,5 +18,5 @@ public interface ArticleService {
 
     ResponseEntity<ArticleResponse> addArticle(ArticleResponse articleResponse);
 
-    ResponseEntity<List<ArticleResponse>> getArticlesPageable(Optional<String> author, Optional<Integer> limit, Optional<Integer> offset,Optional<String> favorited,Optional<String> tag);
+    ResponseEntity<ArticleResponse> getArticlesPageable(Optional<String> author, Optional<Integer> limit, Optional<Integer> offset,Optional<String> favorited,Optional<String> tag);
 }

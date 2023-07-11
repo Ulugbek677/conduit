@@ -27,7 +27,7 @@ public class ArticleController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ArticleResponse>> getArticles(@RequestParam Optional<String> author,
+    public ResponseEntity<ArticleResponse> getArticles(@RequestParam Optional<String> author,
                                                              @RequestParam Optional<Integer> limit,
                                                              @RequestParam Optional<Integer> offset,
                                                              @RequestParam Optional<String> favorited,
