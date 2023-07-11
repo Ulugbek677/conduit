@@ -27,10 +27,12 @@ public class ArticleController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ArticleResponse>> getArticles(@RequestParam Optional<Date> sortColumnName,
-                                                             @RequestParam Optional<Integer> pageNum,
-                                                             @RequestParam Optional<Integer> size){
-        return articleService.getSortByPageable(sortColumnName, pageNum, size);
+    public ResponseEntity<List<ArticleResponse>> getArticles(@RequestParam Optional<String> author,
+                                                             @RequestParam Optional<Integer> limit,
+                                                             @RequestParam Optional<Integer> offset,
+                                                             @RequestParam Optional<String> favorited,
+                                                             @RequestParam Optional<String> tag){
+        return articleService.getArticlesPageable(author, limit, offset, tag, favorited);
     }
 
     @DeleteMapping("{slug}")

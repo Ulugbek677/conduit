@@ -4,13 +4,17 @@ import io.realworld.angular.conduit.dto.ArticleDTO;
 import io.realworld.angular.conduit.dto.response.ArticleResponse;
 import io.realworld.angular.conduit.mapper.ArticleMapper;
 import io.realworld.angular.conduit.model.Article;
+import io.realworld.angular.conduit.model.Tag;
 import io.realworld.angular.conduit.repository.ArticleRepository;
 import io.realworld.angular.conduit.repository.UserRepository;
 import io.realworld.angular.conduit.service.ArticleService;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.criteria.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -21,12 +25,15 @@ public class ArticleServiceImpl implements ArticleService {
     private final ArticleRepository articleRepository;
     private final UserRepository userRepository;
     private final ArticleMapper articleMapper;
+    private final EntityManager entityManager;
 
 
     @Override
     public ResponseEntity<ArticleResponse> getById(String slug) {
         int i = slug.lastIndexOf("-");
         Long id = Long.valueOf(slug.substring(i + 1));
+        System.out.println("fjd;lafjdla;fjad;lfjadl;kfj"+" " + id);
+
 
         Optional<Article> optionalArticle = articleRepository.findById(id);
         if (optionalArticle.isEmpty()) {
@@ -34,6 +41,7 @@ public class ArticleServiceImpl implements ArticleService {
         }
 
         Article article = optionalArticle.get();
+        System.out.println(article.getTitle());
         ArticleDTO articleDTO = articleMapper.toDto(article, articleRepository, userRepository);
 
         return ResponseEntity.ok(ArticleResponse
@@ -72,8 +80,9 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public ResponseEntity<List<ArticleResponse>> getSortByPageable(Optional<Date> sortColumnName, Optional<Integer> pageNum, Optional<Integer> size) {
-        return null;
+    public ResponseEntity<List<ArticleResponse>> getArticlesPageable(Optional<String> author, Optional<Integer> limit, Optional<Integer> offset, Optional<String> favorited, Optional<String> tag) {
+        return ResponseEntity.ok(articleRepository.getArticlePageableLikesPostAuthorPost(author, limit, offset, favorited, tag));
     }
+
 
 }
