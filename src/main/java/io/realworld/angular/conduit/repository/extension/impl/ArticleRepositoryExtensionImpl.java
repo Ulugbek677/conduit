@@ -18,19 +18,15 @@ public class ArticleRepositoryExtensionImpl implements ArticleRepositoryExtensio
     @Override
     public List<ArticleResponse> getArticlePageableLikesPostAuthorPost(Optional<String> author, Optional<Integer> limit, Optional<Integer> offset, Optional<String> favorited, Optional<String> tag) {
 
-        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
 
-        CriteriaQuery<Article> query = cb.createQuery(Article.class);
-        Root<Article> articleRoot = query.from(Article.class);
+        CriteriaQuery<Article> query = criteriaBuilder.createQuery(Article.class);
+        Root<Article> root = query.from(Article.class);
 
         List<Predicate> predicates = new ArrayList<>();
 
 
-        if (author.isPresent()) {
-            Join<Article, User> joinAuthor = articleRoot.join("author");
-            predicates.add(cb.equal(joinAuthor.get("username"), author.get()));
-        }
-
+        author.ifPresent(value->predicates.add(criteriaBuilder.equal(root.get("author").get("username"),value)));
 
 //        public List<Article> getArticlesPageable(Integer limit, Integer offset, Optional<String> author, Optional<String> favorited, Optional<String> tag)
 //        {
