@@ -2,7 +2,7 @@ package io.realworld.angular.conduit.service.impl;
 
 import io.realworld.angular.conduit.dto.ArticleDTO;
 import io.realworld.angular.conduit.dto.response.ArticleResponse;
-import io.realworld.angular.conduit.mapper.extention.ArticleMapper;
+import io.realworld.angular.conduit.mapper.ArticleMapper;
 import io.realworld.angular.conduit.model.Article;
 import io.realworld.angular.conduit.repository.ArticleRepository;
 import io.realworld.angular.conduit.repository.UserRepository;
