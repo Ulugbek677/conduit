@@ -17,6 +17,7 @@ import java.util.List;
 public class Article {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
     private String title;
     private String description;
@@ -33,8 +34,16 @@ public class Article {
     private LocalDate createdAt;
     @Column(name = "updatedat")
     private LocalDate updateAt;
+
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "likes",
+            joinColumns = {@JoinColumn(name = "article_id")},
+            inverseJoinColumns = {@JoinColumn(name = "user_id")})
+    private List<User> likes;
     @ManyToOne
     private User author;
+
 
 
 }

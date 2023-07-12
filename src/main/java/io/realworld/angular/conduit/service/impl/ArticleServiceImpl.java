@@ -1,7 +1,9 @@
 package io.realworld.angular.conduit.service.impl;
 
+import io.realworld.angular.conduit.customexseptions.NoResourceFoundException;
 import io.realworld.angular.conduit.dto.ArticleDTO;
 import io.realworld.angular.conduit.dto.response.ArticleResponse;
+import io.realworld.angular.conduit.dto.response.CommentResponse;
 import io.realworld.angular.conduit.mapper.ArticleMapper;
 import io.realworld.angular.conduit.model.Article;
 import io.realworld.angular.conduit.repository.ArticleRepository;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -28,7 +31,8 @@ public class ArticleServiceImpl implements ArticleService {
     public ResponseEntity<ArticleResponse> getById(String slug) {
         int i = slug.lastIndexOf("-");
         Long id = Long.valueOf(slug.substring(i + 1));
-        System.out.println("fjd;lafjdla;fjad;lfjadl;kfj"+" " + id);
+
+
 
 
         Optional<Article> optionalArticle = articleRepository.findById(id);
@@ -37,7 +41,7 @@ public class ArticleServiceImpl implements ArticleService {
         }
 
         Article article = optionalArticle.get();
-        System.out.println(article.getTitle());
+
         ArticleDTO articleDTO = articleMapper.toDto(article);
 
         return ResponseEntity.ok(ArticleResponse
@@ -77,7 +81,48 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public ResponseEntity<ArticleResponse> getArticlesPageable(Optional<String> author, Optional<Integer> limit, Optional<Integer> offset, Optional<String> favorited, Optional<String> tag) {
-        return ResponseEntity.ok(articleRepository.getArticlePageable(author, limit, offset, favorited, tag));
+        List<Article> articles = articleRepository.getArticlePageable(author, limit, offset, favorited, tag);
+        List<ArticleDTO> dto = articles.stream().map(articleMapper::toDto).collect(Collectors.toList());
+        return ResponseEntity.ok(ArticleResponse.builder().articles(dto).build());
+    }
+
+    @Override
+    public ResponseEntity<ArticleResponse> likeArticle(String slug) {
+        int i = slug.lastIndexOf("-");
+        Long id = Long.valueOf(slug.substring(i + 1));
+        //TODO userid change
+        Long userId = 1L;
+        Article article = articleRepository.findById(id)
+                .orElseThrow(() -> new NoResourceFoundException(" article not found"));
+
+        if (!articleRepository.isFavorited(id, userId).equalsIgnoreCase("true")){
+            articleRepository.likeArticle(id, userId);
+        }
+
+        ArticleDTO articleDTO = articleMapper.toDto(article);
+
+
+        return ResponseEntity.ok(ArticleResponse.builder().article(articleDTO).build());
+    }
+
+    @Override
+    public ResponseEntity<ArticleResponse> getArticlesByToken(Integer limit, Integer offset) {
+        return null;
+    }
+
+    @Override
+    public ResponseEntity<ArticleResponse> deleteLike(String slug) {
+        return null;
+    }
+
+    @Override
+    public ResponseEntity<CommentResponse> addComment(String slug, CommentResponse commentResponse) {
+        return null;
+    }
+
+    @Override
+    public void deleteComment(String slug, Long id) {
+
     }
 
 

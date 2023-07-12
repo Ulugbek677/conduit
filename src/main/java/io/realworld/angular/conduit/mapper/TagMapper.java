@@ -13,9 +13,8 @@ public class TagMapper {
 
     public static Tag toEntity(TagDTO tagDTO) {
         return new Tag(
-                null,
-                tagDTO.getName(),
-                null
+               null,
+                tagDTO.getName()
         );
     }
     public static TagDTO toDto(Tag tag) {

@@ -19,4 +19,5 @@ public class Comment {
     private Article article;
 
     private LocalDateTime createAt;
+    private LocalDateTime updateAt;
 }

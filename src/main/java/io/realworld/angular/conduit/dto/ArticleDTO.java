@@ -13,7 +13,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ArticleDTO {
+public class  ArticleDTO {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Long id;
     private String slug;

@@ -18,6 +18,4 @@ public class Tag {
     private Long id;
     private String name;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    private List<Article> articles;
 }
