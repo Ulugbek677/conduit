@@ -2,18 +2,24 @@ package io.realworld.angular.conduit.service.impl;
 
 import io.realworld.angular.conduit.customexseptions.NoResourceFoundException;
 import io.realworld.angular.conduit.dto.ArticleDTO;
+import io.realworld.angular.conduit.dto.ProfileDTO;
 import io.realworld.angular.conduit.dto.response.ArticleResponse;
 import io.realworld.angular.conduit.dto.response.CommentResponse;
 import io.realworld.angular.conduit.mapper.ArticleMapper;
+import io.realworld.angular.conduit.mapper.UserMapper;
 import io.realworld.angular.conduit.model.Article;
+import io.realworld.angular.conduit.model.User;
 import io.realworld.angular.conduit.repository.ArticleRepository;
 import io.realworld.angular.conduit.repository.UserRepository;
 import io.realworld.angular.conduit.service.ArticleService;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -29,8 +35,8 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public ResponseEntity<ArticleResponse> getById(String slug) {
-        int i = slug.lastIndexOf("-");
-        Long id = Long.valueOf(slug.substring(i + 1));
+        String[] split = slug.split("-");
+        Long id = Long.parseLong(split[split.length-1]);
 
 
 
@@ -52,8 +58,8 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public void deleteArticle(String slug) {
-        int i = slug.lastIndexOf("-");
-        Long id = Long.valueOf(slug.substring(i + 1));
+        String[] split = slug.split("-");
+        Long id = Long.parseLong(split[split.length-1]);
         articleRepository.deleteById(id);
     }
 
@@ -70,7 +76,14 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public ResponseEntity<ArticleResponse> addArticle(ArticleResponse articleResponse) {
         ArticleDTO articleDTO = articleResponse.getArticle();
+        articleDTO.setCreatedAt(LocalDateTime.now());
         Article article = articleMapper.toEntity(articleDTO);
+        if (article.getAuthor() == null) {
+            String email = SecurityContextHolder.getContext().getAuthentication().getName();
+            User user = userRepository.findByEmail(email)
+                    .orElseThrow(() -> new NoResourceFoundException("user not found"));
+            article.setAuthor(user);
+        }
         article = articleRepository.save(article);
         articleDTO = articleMapper.toDto(article);
         return ResponseEntity.ok(ArticleResponse
@@ -88,8 +101,8 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public ResponseEntity<ArticleResponse> likeArticle(String slug) {
-        int i = slug.lastIndexOf("-");
-        Long id = Long.valueOf(slug.substring(i + 1));
+        String[] split = slug.split("-");
+        Long id = Long.parseLong(split[split.length-1]);
         //TODO userid change
         Long userId = 1L;
         Article article = articleRepository.findById(id)

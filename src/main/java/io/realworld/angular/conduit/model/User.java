@@ -27,4 +27,5 @@ public class User {
             inverseJoinColumns = {
                     @JoinColumn(table = "users", referencedColumnName = "id", name = "user_id")})
     private List<User> followers;
+
 }

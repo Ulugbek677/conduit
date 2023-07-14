@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -31,9 +32,9 @@ public class Article {
     private List<Tag> tagList;
 
     @Column(name = "createdat")
-    private LocalDate createdAt;
+    private LocalDateTime createdAt;
     @Column(name = "updatedat")
-    private LocalDate updateAt;
+    private LocalDateTime updateAt;
 
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -43,7 +44,5 @@ public class Article {
     private List<User> likes;
     @ManyToOne
     private User author;
-
-
 
 }

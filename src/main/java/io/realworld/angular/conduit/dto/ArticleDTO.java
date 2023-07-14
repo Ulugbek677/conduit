@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -20,9 +21,9 @@ public class  ArticleDTO {
     private String title;
     private String description;
     private String body;
-    private List<TagDTO> tagList;
-    private LocalDate createdAt;
-    private LocalDate updateAt;
+    private List<String> tagList;
+    private LocalDateTime createdAt;
+    private LocalDateTime updateAt;
     private Boolean favorited;
     private Long favoritesCount;
     private ProfileDTO author;
