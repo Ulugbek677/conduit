@@ -18,4 +18,7 @@ public interface TagRepository extends JpaRepository<Tag,Long> {
     List<String> getPopularTags();
 
     Optional<Tag> findByName(String name);
+
+    List<Tag> findByNameIn(List<String> names);
+
 }

@@ -51,10 +51,7 @@ public class ArticleMapper {
                 articleDTO.getTitle(),
                 articleDTO.getDescription(),
                 articleDTO.getBody(),
-                articleDTO.getTagList()
-                        .stream()
-                        .map(t -> tagMapper.toEntity(new TagDTO(t)))
-                        .collect(Collectors.toList()),
+                tagMapper.toEntities(articleDTO.getTagList()),
                 articleDTO.getCreatedAt(),
                 articleDTO.getUpdateAt(),
                 null,
