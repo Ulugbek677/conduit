@@ -23,7 +23,7 @@ public class  ArticleDTO {
     private String body;
     private List<String> tagList;
     private LocalDateTime createdAt;
-    private LocalDateTime updateAt;
+    private LocalDateTime updatedAt;
     private Boolean favorited;
     private Long favoritesCount;
     private ProfileDTO author;

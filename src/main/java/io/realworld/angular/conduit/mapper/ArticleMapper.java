@@ -53,7 +53,7 @@ public class ArticleMapper {
                 articleDTO.getBody(),
                 tagMapper.toEntities(articleDTO.getTagList()),
                 articleDTO.getCreatedAt(),
-                articleDTO.getUpdateAt(),
+                articleDTO.getUpdatedAt(),
                 null,
                 userMapper.toEntity(articleDTO.getAuthor())
 

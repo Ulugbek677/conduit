@@ -1,5 +1,6 @@
 package io.realworld.angular.conduit.controller;
 
+import io.realworld.angular.conduit.dto.CommentDTO;
 import io.realworld.angular.conduit.dto.response.ArticleResponse;
 import io.realworld.angular.conduit.dto.response.CommentResponse;
 import io.realworld.angular.conduit.service.ArticleService;
@@ -32,6 +33,12 @@ public class ArticleController {
         return articleService.getById(slug);
     }
 
+
+
+    @GetMapping("/{slug}/comments")
+    public ResponseEntity<CommentResponse> getArticleComments(@PathVariable String slug){
+        return articleService.getArticleComments(slug);
+    }
     @GetMapping
     public ResponseEntity<ArticleResponse> getArticles(@RequestParam Optional<String> author,
                                                              @RequestParam Optional<Integer> limit,

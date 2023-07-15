@@ -1,5 +1,6 @@
 package io.realworld.angular.conduit.service;
 
+import io.realworld.angular.conduit.dto.CommentDTO;
 import io.realworld.angular.conduit.dto.response.ArticleResponse;
 import io.realworld.angular.conduit.dto.response.CommentResponse;
 import org.springframework.http.ResponseEntity;
@@ -30,4 +31,6 @@ public interface ArticleService {
     ResponseEntity<CommentResponse> addComment(String slug, CommentResponse commentResponse);
 
     void deleteComment(String slug, Long id);
+
+    ResponseEntity<CommentResponse> getArticleComments(String slug);
 }

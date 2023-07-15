@@ -2,23 +2,23 @@ package io.realworld.angular.conduit.service.impl;
 
 import io.realworld.angular.conduit.customexseptions.NoResourceFoundException;
 import io.realworld.angular.conduit.dto.ArticleDTO;
-import io.realworld.angular.conduit.dto.ProfileDTO;
+import io.realworld.angular.conduit.dto.CommentDTO;
 import io.realworld.angular.conduit.dto.response.ArticleResponse;
 import io.realworld.angular.conduit.dto.response.CommentResponse;
 import io.realworld.angular.conduit.mapper.ArticleMapper;
-import io.realworld.angular.conduit.mapper.UserMapper;
+import io.realworld.angular.conduit.mapper.CommentMapper;
 import io.realworld.angular.conduit.model.Article;
+import io.realworld.angular.conduit.model.Comment;
 import io.realworld.angular.conduit.model.User;
 import io.realworld.angular.conduit.repository.ArticleRepository;
+import io.realworld.angular.conduit.repository.CommentRepository;
 import io.realworld.angular.conduit.repository.UserRepository;
 import io.realworld.angular.conduit.service.ArticleService;
-import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -30,30 +30,36 @@ public class ArticleServiceImpl implements ArticleService {
     private final ArticleRepository articleRepository;
     private final UserRepository userRepository;
     private final ArticleMapper articleMapper;
-    private final EntityManager entityManager;
+    private final CommentMapper commentMapper;
+
+    private final CommentRepository commentRepository;
+
 
 
     @Override
     public ResponseEntity<ArticleResponse> getById(String slug) {
         String[] split = slug.split("-");
-        Long id = Long.parseLong(split[split.length-1]);
+        if (split.length>1) {
 
 
+            Long id = Long.parseLong(split[split.length - 1]);
 
 
-        Optional<Article> optionalArticle = articleRepository.findById(id);
-        if (optionalArticle.isEmpty()) {
-            return ResponseEntity.badRequest().body(null);
+            Optional<Article> optionalArticle = articleRepository.findById(id);
+            if (optionalArticle.isEmpty()) {
+                return ResponseEntity.badRequest().body(null);
+            }
+
+            Article article = optionalArticle.get();
+
+            ArticleDTO articleDTO = articleMapper.toDto(article);
+
+            return ResponseEntity.ok(ArticleResponse
+                    .builder()
+                    .article(articleDTO)
+                    .build());
         }
-
-        Article article = optionalArticle.get();
-
-        ArticleDTO articleDTO = articleMapper.toDto(article);
-
-        return ResponseEntity.ok(ArticleResponse
-                .builder()
-                .article(articleDTO)
-                .build());
+        return ResponseEntity.badRequest().build();
     }
 
     @Override
@@ -130,12 +136,38 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public ResponseEntity<CommentResponse> addComment(String slug, CommentResponse commentResponse) {
-        return null;
+        Long id = Long.parseLong(slug.substring(slug.lastIndexOf("-") + 1));
+        System.out.println(commentResponse.getComment());
+        CommentDTO commentDTO = commentResponse.getComment();
+        Comment comment = commentMapper.toEntity(commentDTO);
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.findByEmail(email).orElseThrow(()->new NoResourceFoundException("user not found"));
+        Article article = articleRepository.findById(id).orElseThrow(()->new NoResourceFoundException("Article not found"));
+        comment.setArticle(article);
+        comment.setAuthor(user);
+        comment.setCreatedAt(LocalDateTime.now());
+        Comment save = commentRepository.save(comment);
+        CommentDTO dto = commentMapper.toDto(save);
+        return ResponseEntity.ok(CommentResponse.builder().comment(dto).build());
     }
 
     @Override
     public void deleteComment(String slug, Long id) {
 
+    }
+
+    @Override
+    public ResponseEntity<CommentResponse> getArticleComments(String slug) {
+        String[] split = slug.split("-");
+        Long id = Long.parseLong(split[split.length-1]);
+        Article article = articleRepository.findById(id).orElseThrow(()->new NoResourceFoundException("Article not found"));
+
+        List<Comment> comments = commentRepository.findByArticle(article);
+        List<CommentDTO> dto = comments.stream()
+                .map(commentMapper::toDto)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(CommentResponse.builder().comments(dto).build());
     }
 
 
