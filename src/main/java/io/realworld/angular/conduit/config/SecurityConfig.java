@@ -17,7 +17,6 @@ import java.util.List;
 import static org.springframework.security.config.Customizer.withDefaults;
 
 @Service
-
 @RequiredArgsConstructor
 public class SecurityConfig {
     private final JwtValidatorFilter jwtValidatorFilter;

@@ -20,7 +20,7 @@ public interface ArticleService {
 
     ResponseEntity<ArticleResponse> addArticle(ArticleResponse articleResponse);
 
-    ResponseEntity<ArticleResponse> getArticlesPageable(Optional<String> author, Optional<Integer> limit, Optional<Integer> offset,Optional<String> favorited,Optional<String> tag);
+    ResponseEntity<ArticleResponse> getArticlesPageable(Optional<String> author, Integer limit, Integer offset,Optional<String> favorited,Optional<String> tag);
 
     ResponseEntity<ArticleResponse> likeArticle(String slug);
 

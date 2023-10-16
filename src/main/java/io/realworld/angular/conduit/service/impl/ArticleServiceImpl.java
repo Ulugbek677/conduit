@@ -16,6 +16,7 @@ import io.realworld.angular.conduit.repository.UserRepository;
 import io.realworld.angular.conduit.service.ArticleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -99,7 +100,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public ResponseEntity<ArticleResponse> getArticlesPageable(Optional<String> author, Optional<Integer> limit, Optional<Integer> offset, Optional<String> favorited, Optional<String> tag) {
+    public ResponseEntity<ArticleResponse> getArticlesPageable(Optional<String> author, Integer limit, Integer offset, Optional<String> favorited, Optional<String> tag) {
         List<Article> articles = articleRepository.getArticlePageable(author, limit, offset, favorited, tag);
         List<ArticleDTO> dto = articles.stream().map(articleMapper::toDto).collect(Collectors.toList());
         return ResponseEntity.ok(ArticleResponse.builder().articles(dto).build());
@@ -126,11 +127,25 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public ResponseEntity<ArticleResponse> getArticlesByToken(Integer limit, Integer offset) {
-        return null;
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userRepository.findByEmail(authentication.getName())
+                .orElseThrow(() -> new NoResourceFoundException(" user not found"));
+        List<Article> articlesByFollower = articleRepository.getArticlesByFollower(user.getId(), limit, offset);
+        List<ArticleDTO> dto = articlesByFollower.stream().map(articleMapper::toDto).collect(Collectors.toList());
+        return ResponseEntity.ok(ArticleResponse.builder().articles(dto).build());
     }
 
     @Override
     public ResponseEntity<ArticleResponse> deleteLike(String slug) {
+        Long articleId = Long.parseLong(slug.substring(slug.lastIndexOf("-")+1));
+
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new NoResourceFoundException("user not found"));
+
+        articleRepository.deleteLike(user.getId(),articleId);
+
         return null;
     }
 
@@ -153,7 +168,11 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public void deleteComment(String slug, Long id) {
+        Long articleId = Long.parseLong(slug.substring(slug.lastIndexOf("-")+1));
+        Comment comment = commentRepository.findByIdAndArticleId(id, articleId)
+                .orElseThrow(() -> new NoResourceFoundException(" comment not found"));
 
+        commentRepository.delete(comment);
     }
 
     @Override

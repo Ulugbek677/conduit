@@ -1,6 +1,7 @@
 package io.realworld.angular.conduit.repository;
 
 import io.realworld.angular.conduit.model.User;
+import io.realworld.angular.conduit.repository.extension.UserRepositoryExtension;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -8,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface UserRepository extends JpaRepository<User, Long>, UserRepositoryExtension {
     @Query(value = "select case when count(*) > 0 then 'true' else 'false' end " +
             "from articles a join follows f " +
             "on a.author_id = f.user_id " +

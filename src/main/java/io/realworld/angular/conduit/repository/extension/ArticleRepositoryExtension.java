@@ -7,10 +7,14 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ArticleRepositoryExtension {
-    List<Article> getArticlePageable(Optional<String> author, Optional<Integer> limit, Optional<Integer> offset, Optional<String> favorited, Optional<String> tag);
+    List<Article> getArticlePageable(Optional<String> author, Integer limit, Integer offset, Optional<String> favorited, Optional<String> tag);
 
+    void likeArticle(Long articleId,Long userId);
+    boolean isCurrentUserLiked(Long articleId,Long userId);
 
+    List<Article> getArticlesByFollower(Long id,Integer limit, Integer offset);
 
+    void deleteLike(Long userId, Long articleId);
 
 
 }
